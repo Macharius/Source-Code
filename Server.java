@@ -24,18 +24,31 @@ public class Server
 		
 		try
 		{
-			n = Integer.parseInt(args[1]);
-			m = Integer.parseInt(args[2]);
-			treasure_number = Integer.parseInt(args[3]);
+			n = Integer.parseInt(args[0]);
+			m = Integer.parseInt(args[1]);
+			treasure_number = Integer.parseInt(args[2]);
 		}
 		catch (ArrayIndexOutOfBoundsException e)
 		{
-			System.out.println("Not enough Parameters");
-			return;
+			n = 10;
+			m = 10;
+			treasure_number = 10;
+		}
+		
+		Game game = new Game(n,m,treasure_number);
+		
+		System.out.println("Game created with characteristics : (length,height,treasure number) = (" + n + "," + m + "," + treasure_number + ")");
+		
+		try
+		{
+			game.addPlayer(1);
+		}
+		catch (PlayerAlreadyRegistered e)
+		{
 		}
 		
 		
-		Game game = new Game(n,m,treasure_number);
+		game.printGrid();
 		
 		
 		
