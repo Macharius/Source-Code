@@ -38,17 +38,37 @@ public class Server
 		Game game = new Game(n,m,treasure_number);
 		
 		System.out.println("Game created with characteristics : (length,height,treasure number) = (" + n + "," + m + "," + treasure_number + ")");
-		
+		for (int j = 1 ; j < 10 ; j++)
+		{
 		try
 		{
-			game.addPlayer(1);
+			game.addPlayer(j);
 		}
 		catch (PlayerAlreadyRegistered e)
 		{
 		}
+		}
 		
 		
-		game.printGrid();
+		String direction = new String();
+		do
+		{
+			game.printGrid(1);
+			game.printScores();
+			
+			Scanner sc = new Scanner(System.in);
+			direction = sc.nextLine();
+			
+			try
+			{
+				game.movePlayer(1,direction.charAt(0));
+			}
+			catch (Exception e)
+			{
+			}
+		
+		
+		} while (direction !="quit");
 		
 		
 		
