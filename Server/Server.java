@@ -6,6 +6,7 @@
 /* Main class for the Server program
 /****************************************/
 
+
 import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -14,7 +15,6 @@ import java.util.*;
 public class Server
 {
 
-	
 	// Program syntax : Server.java grid_length grid_height treasure_number
 	public static void main(String[] args)
 	{
@@ -37,38 +37,24 @@ public class Server
 		
 		Game game = new Game(n,m,treasure_number);
 		
-		System.out.println("Game created with characteristics : (length,height,treasure number) = (" + n + "," + m + "," + treasure_number + ")");
-		for (int j = 1 ; j < 10 ; j++)
-		{
-		try
-		{
-			game.addPlayer(j);
-		}
-		catch (PlayerAlreadyRegistered e)
-		{
-		}
-		}
+		PlayersConnection pc = new PlayersConnection();
 		
-		
-		String direction = new String();
-		do
-		{
-			game.printGrid(1);
-			game.printScores();
-			
-			Scanner sc = new Scanner(System.in);
-			direction = sc.nextLine();
-			
-			try
-			{
-				game.movePlayer(1,direction.charAt(0));
-			}
-			catch (Exception e)
-			{
-			}
-		
-		
-		} while (direction !="quit");
+                System.out.println("waiting for players");
+                
+		pc.waitForPlayers(60);
+                
+                System.out.println("The game can start");
+                
+                
+                String[][] list = pc.getList();
+                
+                System.out.println("Number of registered players : " + list.length);
+                
+                System.out.println("List of registered players :");
+                for (int i = 0 ; i < list.length ; i++)
+                    System.out.println("ID : " + list[i][0] + " IP address : " + list[i][1]);
+                
+                
 		
 		
 		
