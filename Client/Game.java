@@ -75,7 +75,7 @@ public class Game
 	
 	
 	//Initialize the grid, the treasure positions
-	public void initialization()
+	public synchronized void initialization()
 	{
 		Random random_generator = new Random();
 		
@@ -97,7 +97,7 @@ public class Game
 	// if idPlayer is already registred, this method raises a PlayerAlreadyPresent
 	// exception.
 	// idPlayer should be a strictly positive integer
-	public void addPlayer(int idPlayer) throws PlayerAlreadyRegistered
+	public synchronized void addPlayer(int idPlayer) throws PlayerAlreadyRegistered
 	{
 		// We search in the list if there is already a player with the given ID
 		boolean id_not_present = true;
@@ -146,7 +146,7 @@ public class Game
 	// return true if the player has moved otherwise raise a WrongDirection
 	// exception
 	// raise a PlayerNotPresent exception if idPlayer is not registered
-	public boolean movePlayer(int idPlayer, char direction) throws PlayerNotPresent, WrongDirection
+	public synchronized boolean movePlayer(int idPlayer, char direction) throws PlayerNotPresent, WrongDirection
 	{
 		//First we make sure that there is a player with the given ID in the list
 		int index_player = -1;

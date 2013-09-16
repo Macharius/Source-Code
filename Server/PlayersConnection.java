@@ -14,107 +14,127 @@ import java.io.*;
 import java.util.*;
 
 
-
+// This class handle the creation of the player list
 class ServerConnections implements Runnable
 {
-    private int m_serverPort;
-    private ServerSocket m_serverSocket;
-    private ArrayList<Integer> m_clientListId;
-    private ArrayList<String> m_clientListIP;
-    private boolean m_running;
-    private int m_clientCount;
+    private int m_serverPort;                   // The port we use
+    private ServerSocket m_serverSocket;        // The server socket
+    private ArrayList<Integer> m_clientListId;  // The list of given IDs
+    private ArrayList<String> m_clientListIP;   // The list of the corresponding IPs
+    private boolean m_running;                  // true if we listen ton incoming connections
+    private int m_clientCount;                  // Counter of the IDs given
 	
-	
+    
+    // Initiate the class.
     public ServerConnections(int portNumber)
     {
         this.m_serverPort = portNumber;
         this.m_clientListId = new ArrayList<Integer>();
         this.m_clientListIP = new ArrayList<String>();
         this.m_running = true;
-        
+                
+        //We try to create a new socket server
         try
         {
-           this.m_serverSocket = new ServerSocket(this.m_serverPort); 
+           this.m_serverSocket = new ServerSocket(this.m_serverPort);
         }
         catch (IOException e)
         {
-            
+            System.out.println("Impossible to initiate the socket server");
         }
     }
-	
+    
+    // The default port value is 9409
     public ServerConnections()
     {
         this(9409);
     }
-	
-	
-
+    
+    // Method called when we launch the Thread
+    // Warning : this is not a synchronized method !
     public void run()
     {
+        //We set the running flag as true
         running(true);
         
+        // We listen new incoming connections as long as the running flag is not
+        // down
         while (running())
         {
             Socket newClientSocket = null;
+            // We try to accept the new incoming connection
             try 
             {
                 newClientSocket = this.m_serverSocket.accept();
+                
+                    try 
+                    {
+                        SocketAddress clientAddress = newClientSocket.getRemoteSocketAddress();
+                        boolean validId = false;
+                        int id = this.m_clientCount;
+
+                        // We check that the ID is not already given
+                        while (!validId)
+                        {
+                            id+=1;
+                            validId = true;
+                            for (int i = 0 ; i < this.m_clientListId.size(); i++)
+                                if(this.m_clientListId.get(i) == id)
+                                    validId = false;
+                        }
+
+                        //We update the client counter
+                        this.m_clientCount = id;
+
+                        // We add the client informations to the list
+                        this.m_clientListId.add(id);
+                        String stringIpClient=clientAddress.toString();
+                        int separator = stringIpClient.indexOf(":");
+                        stringIpClient=stringIpClient.substring(1,separator);
+                        this.m_clientListIP.add(stringIpClient);
+
+                        // We send the ID to the client
+                        ObjectOutputStream out = new ObjectOutputStream(newClientSocket.getOutputStream());
+                        out.writeObject(id);
+                        out.flush();
+
+                        newClientSocket.close();				
+                    } 
+                    catch (IOException e) 
+                    {
+                        System.out.println("Impossible to add the new client to the list");
+                    }
             } 
             catch (IOException e) 
             {
                 System.out.println("Problem accepting new client");
-                return;
             }
-           try 
-           {
-                SocketAddress clientAddress = newClientSocket.getRemoteSocketAddress();
-                boolean validId = false;
-                int id = this.m_clientCount;
-
-                while (!validId)
-                {
-                    id+=1;
-                    validId = true;
-                    for (int i = 0 ; i < this.m_clientListId.size(); i++)
-                        if(this.m_clientListId.get(i) == id)
-                            validId = false;
-                }
-
-                this.m_clientCount = id;
-
-                this.m_clientListId.add(id);
-                String stringIpClient=clientAddress.toString();
-                int separator = stringIpClient.indexOf(":");
-                stringIpClient=stringIpClient.substring(1,separator);
-                this.m_clientListIP.add(stringIpClient);
-
-                PrintWriter out = new PrintWriter(newClientSocket.getOutputStream(),true);
-                out.println(id);
-
-                out.flush();
-
-                newClientSocket.close();				
-            } 
-            catch (IOException e) 
-            {
-                System.out.println("Impossible to add the new client to the list");
-            }
+            
+            // We try to add the client ID and IP address in the list and we
+            // send him his ID
+            
         }
     }
-			
+    
+    // Change the running flag state
     private synchronized void running(boolean isRunning)
     {
         this.m_running = isRunning;
     }
-	
+    
+    // Return the running flag state
     private synchronized boolean running()
     {
         return this.m_running;
     }
-	
+    
+    // Stopping the thread
     public synchronized void stop()
     {
+        // We set the running flag as down
         running(false);
+        
+        // We close the server socket
         try
         {
             this.m_serverSocket.close();
@@ -125,6 +145,9 @@ class ServerConnections implements Runnable
         }
     }
     
+    // Return a n*2 String table with clients ID and the corresponding IP address
+    // [n][0] => ID of the nth client
+    // [n][1] => IP address of the nth client
     public String[][] getPlayerList()
     {
         String[][] playerList = new String[this.m_clientListId.size()][2];
@@ -143,8 +166,8 @@ class ServerConnections implements Runnable
 //Class handling the user list creation
 public class PlayersConnection
 {
-    private ServerConnections m_serverConnections;
-    private int m_port;
+    private ServerConnections m_serverConnections;  //the communication class
+    private int m_port; // the port to use
 
     public PlayersConnection(int port)
     {
@@ -154,30 +177,37 @@ public class PlayersConnection
         System.out.println("Class playerConnection created");
     }
     
+    
+    // the default port used to connect srever and client is 9409
     public PlayersConnection()
     {
-        this.PlayersConnection(9409);
+        this(9409);
         
     }
-
-    
     
     // Wait for player connections during the
     // given timeOut (in seconds). This is a
     // blocking call.
     protected void waitForPlayers(int timeOut)
-    {      
-        long startTime = System.currentTimeMillis();
-        
+    {          
         Thread connectionThread = new Thread(m_serverConnections);
-        connectionThread.start();
+        connectionThread.start();  // We start listening incoming connections
 
-        while((System.currentTimeMillis() - startTime) < timeOut *1000 );
-
-        this.m_serverConnections.stop();
+        // We listen during timout secs
+        try
+        {
+            Thread.sleep(timeOut*1000);
+        }
+        catch (InterruptedException e)
+        {
+            System.out.println("Client connection listening aborted");
+        }
+        
+        this.m_serverConnections.stop(); // We stop listening
 
     }
 
+    // The default waiting time for new incoming connections is 20s
     public void waitForPlayers()
     {
         waitForPlayers(20);

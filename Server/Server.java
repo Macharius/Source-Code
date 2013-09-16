@@ -41,7 +41,7 @@ public class Server
 		
                 System.out.println("waiting for players");
                 
-		pc.waitForPlayers(60);
+		pc.waitForPlayers(30);
                 
                 System.out.println("The game can start");
                 

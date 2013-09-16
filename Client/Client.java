@@ -37,16 +37,25 @@ public class Client
         
         
         Socket socket;      //the socket for the server
-        BufferedReader in;  //buffer to read server's messages
+        ObjectInputStream in;  //buffer to read server's messages
         
         //We contact the server
         try
         {
             socket = new Socket(InetAddress.getByName(m_ipServer),m_serverPort);
-            in = new BufferedReader (new InputStreamReader (socket.getInputStream()));
+            in = new ObjectInputStream (socket.getInputStream());
+            Object serverAnswer;
             
             //We read the server's answer, which the player ID
-            String serverAnswer = in.readLine();
+            try
+            {
+                serverAnswer = in.readObject();
+            }
+            catch (ClassNotFoundException e)
+            {
+               System.out.println("Impossible to read given ID");
+               serverAnswer = (int)0;
+            }
             System.out.println("Connected to Server. Identified with ID : " + serverAnswer);
                  
             socket.close();
