@@ -41,18 +41,43 @@ public class Server
 		
                 System.out.println("waiting for players");
                 
-		pc.waitForPlayers(30);
+		pc.waitForPlayers();
                 
                 System.out.println("The game can start");
                 
                 
                 String[][] list = pc.getList();
+                String[] listId = new String[list.length];
+                
+                for (int i = 0 ; i < list.length ; i++)
+                    listId[i] = list[i][0];
+                
                 
                 System.out.println("Number of registered players : " + list.length);
                 
                 System.out.println("List of registered players :");
                 for (int i = 0 ; i < list.length ; i++)
-                    System.out.println("ID : " + list[i][0] + " IP address : " + list[i][1]);
+                    System.out.println("ID : " + listId[i] + " IP address : " + list[i][1]);
+                
+                for (int i = 0 ; i < list.length ; i++)
+                {
+                    try
+                    {
+                        game.addPlayer(Integer.parseInt(listId[i]));
+                    }
+                    catch(PlayerAlreadyRegistered e)
+                    {
+                        
+                    }
+                }
+                
+                game.printGrid();
+                
+                PlayerIOInterface pii = new PlayerIOInterface(game, list);
+                
+                System.out.println("Listening messages...");
+                
+                pii.listen();
                 
                 
 		

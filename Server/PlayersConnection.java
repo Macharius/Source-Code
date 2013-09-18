@@ -89,8 +89,8 @@ class ServerConnections implements Runnable
                         // We add the client informations to the list
                         this.m_clientListId.add(id);
                         String stringIpClient=clientAddress.toString();
-                        int separator = stringIpClient.indexOf(":");
-                        stringIpClient=stringIpClient.substring(1,separator);
+                        //int separator = stringIpClient.indexOf(":");
+                        //stringIpClient=stringIpClient.substring(1,separator);
                         this.m_clientListIP.add(stringIpClient);
 
                         // We send the ID to the client

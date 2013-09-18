@@ -217,6 +217,11 @@ public class Game
 		throw new PlayerNotPresent();
 	}
 	
+        public int getTreasuresLeft()
+        {
+            return m_listTreasures.size();
+        }
+        
 	// return the length of the game grid
 	public int getLength()
 	{

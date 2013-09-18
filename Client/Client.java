@@ -44,12 +44,12 @@ public class Client
         {
             socket = new Socket(InetAddress.getByName(m_ipServer),m_serverPort);
             in = new ObjectInputStream (socket.getInputStream());
-            Object serverAnswer;
+            int serverAnswer;
             
             //We read the server's answer, which the player ID
             try
             {
-                serverAnswer = in.readObject();
+                serverAnswer = (int)in.readObject();
             }
             catch (ClassNotFoundException e)
             {
@@ -59,6 +59,33 @@ public class Client
             System.out.println("Connected to Server. Identified with ID : " + serverAnswer);
                  
             socket.close();
+            try
+            {
+                Thread.sleep(20*1000);
+            }
+            catch (InterruptedException e)
+            {
+                
+            }
+            
+            while(true)
+            {
+                System.out.println("Send new command (Q to leave) :");
+                Scanner sc = new Scanner(System.in);
+                String str = sc.nextLine();
+                
+                if (str.charAt(0) == 'Q')
+                    break;
+                
+                socket = new Socket(InetAddress.getByName(m_ipServer),m_serverPort);
+
+                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                out.writeObject(serverAnswer);
+                out.writeObject(str);
+                out.flush();
+
+                socket.close();
+            }
         }
         catch (UnknownHostException e)
         {
