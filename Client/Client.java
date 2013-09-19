@@ -17,10 +17,46 @@ import java.util.*;
 //and the default port 9409
 public class Client
 {
-    protected static String m_ipServer; //server ip address
-    protected static int m_serverPort; //server port
-       
-    public static void main(String args[])
+    protected  String m_ipServer; //server ip address
+    protected  int m_serverPort; //server port
+    private int m_id;
+    protected  Game m_game;
+      
+    public void getUpdate()
+    {
+        try
+        {    
+            ServerSocket ss = new ServerSocket(this.m_serverPort + this.m_id + 1);
+            
+            Socket socket = ss.accept();
+            
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            
+            try
+            {
+                this.m_game = (Game)in.readObject();
+            }
+            catch (ClassNotFoundException e)
+            {
+
+            }
+            
+            System.out.println("New game received from server");
+            
+            socket.close();
+            ss.close();
+        }
+        catch (IOException e)
+        {
+            
+        }
+        
+        
+        
+    }
+         
+    
+    public void main(String args[])
     {
         //we try read the parameters
         try
@@ -57,7 +93,9 @@ public class Client
                serverAnswer = (int)0;
             }
             System.out.println("Connected to Server. Identified with ID : " + serverAnswer);
-                 
+            
+            this.m_id = serverAnswer;
+            
             socket.close();
             try
             {
@@ -85,6 +123,8 @@ public class Client
                 out.flush();
 
                 socket.close();
+                
+                getUpdate();
             }
         }
         catch (UnknownHostException e)

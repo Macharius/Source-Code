@@ -73,7 +73,7 @@ public class Server
                 
                 game.printGrid();
                 
-                PlayerIOInterface pii = new PlayerIOInterface(game, list);
+                PlayerIOInterface pii = new PlayerIOInterface(game, list, 9409);
                 
                 System.out.println("Listening messages...");
                 

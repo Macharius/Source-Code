@@ -21,14 +21,17 @@ public class PlayerIOInterface
     private ArrayList<Thread> m_threadsPlayerGestion;  //The list of processing threads
     private ArrayList<PlayerGestion> m_playerGestion;  //The list of PlayerGestion class
                                                        // (threads). One for each client
+    private int m_port;
     
     
     //Constructor
     //game => the game to use
     //listPlayers => list of clients listPlayers[i][0] -> ID and [1] ->IP
-    public PlayerIOInterface(Game game, String[][] listPlayers)
+    //port => the base port used for communications
+    public PlayerIOInterface(Game game, String[][] listPlayers, int port)
     {
         this.m_game = game;
+        this.m_port = port;
         
         this.m_threadsPlayerGestion = new ArrayList<>();
         this.m_playerGestion = new ArrayList<>();
@@ -79,7 +82,37 @@ public class PlayerIOInterface
     //IDplayer -> the ID of the client to update
     public void updateClient(int IDplayer)
     {
-        //to implement
+        int index = -1;
+        for (int i = 0 ; i < this.m_listIDPlayers.size(); i ++)
+            if (this.m_listIDPlayers.get(i)==IDplayer)
+                index = i;
+        
+        if (index == -1)
+            return;
+        
+        try
+        {
+            Socket socket = new Socket(InetAddress.getByName(m_listIPPlayers.get(index)),this.m_port + IDplayer + 1);
+            
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            out.writeObject(m_game);
+            out.flush();
+            
+            socket.close();
+        }
+        catch (IOException e)
+        {
+            System.out.println("Impossible to initate sending connexion with id : " + IDplayer);
+        }
+        
+        
+        
+    }
+    
+    public void updateAll()
+    {
+        for (int i = 0 ; i < this.m_listIDPlayers.size(); i ++)
+            updateClient(this.m_listIDPlayers.get(i));
     }
     
     
