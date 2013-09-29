@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+package Server;
+
+>>>>>>> pr/1
 /****************************************
 /*        CS5223 - Assignment 1
 /*      Apoorva Tyagi / Remi Pradal
@@ -10,6 +15,13 @@
 import java.net.*;
 import java.io.*;
 import java.util.*;
+<<<<<<< HEAD
+=======
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
+>>>>>>> pr/1
 
 
 //This class handle the input and outputs with the clients
@@ -44,6 +56,11 @@ public class PlayerIOInterface
             this.m_listIDPlayers.add(Integer.parseInt(listPlayers[i][0]));
             this.m_playerGestion.add(new PlayerGestion((int)m_listIDPlayers.get(i),this.m_game));
             this.m_threadsPlayerGestion.add(new Thread(m_playerGestion.get(i)));
+<<<<<<< HEAD
+=======
+            //ExecutorService executor = Executors.newSingleThreadExecutor();
+            //Future<Game> updatedGames = executor.submit(m_playerGestion.get(i));
+>>>>>>> pr/1
             //We launch the processing thread
             synchronized(this.m_threadsPlayerGestion.get(i))
             {
@@ -84,29 +101,67 @@ public class PlayerIOInterface
     {
         int index = -1;
         for (int i = 0 ; i < this.m_listIDPlayers.size(); i ++)
+<<<<<<< HEAD
             if (this.m_listIDPlayers.get(i)==IDplayer)
                 index = i;
         
+=======
+        {
+        	//System.out.println("Checking in updateclient:" + m_listIDPlayers.get(i));
+            if (this.m_listIDPlayers.get(i)==IDplayer)
+                index = i;
+        }
+>>>>>>> pr/1
         if (index == -1)
             return;
         
         try
         {
+<<<<<<< HEAD
             Socket socket = new Socket(InetAddress.getByName(m_listIPPlayers.get(index)),this.m_port + IDplayer + 1);
             
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+=======
+        	//System.out.println("Checking PORT before PLAYERIOIF Socket:" + (this.m_port+IDplayer+1));
+            Socket socket = new Socket(InetAddress.getByName(m_listIPPlayers.get(index)),this.m_port + IDplayer + 1);
+            
+            System.out.println("PII SOCKET:" + socket.toString());
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+           
+            System.out.println("GAME BEFORE WRITEOBJECT:"); m_game.printGrid();
+>>>>>>> pr/1
             out.writeObject(m_game);
             out.flush();
             
             socket.close();
+<<<<<<< HEAD
+=======
+            System.out.println("Client" + IDplayer+ "updated.");
+>>>>>>> pr/1
         }
         catch (IOException e)
         {
             System.out.println("Impossible to initate sending connexion with id : " + IDplayer);
         }
+<<<<<<< HEAD
         
         
         
+=======
+        catch (Exception e)
+        {
+        	System.out.println("Error:" +e);
+        }
+              
+    }
+    
+    public void receiveGameNewState(Game game)
+    {
+    	m_game = game;
+        //System.out.println("CHECK PRINT"); m_game.printGrid();
+
+    	updateAll();
+>>>>>>> pr/1
     }
     
     public void updateAll()
@@ -167,8 +222,13 @@ public class PlayerIOInterface
                             System.out.println("ID received : " + idGiven + "(valid)");
                             String request = (String)in.readObject();
                             System.out.println("request : " + request);
+<<<<<<< HEAD
                             
                             this.process(idGiven, request);
+=======
+                            this.process(idGiven, request);
+                            //updateAll();
+>>>>>>> pr/1
                         }
                         catch (ClassNotFoundException e)
                         {
@@ -216,6 +276,7 @@ public class PlayerIOInterface
                 //we wake up the thread (notify)
                 synchronized(m_playerGestion.get(i))
                 {
+<<<<<<< HEAD
                     m_playerGestion.get(i).wakeUp();
                 }
                 
@@ -225,5 +286,16 @@ public class PlayerIOInterface
         return true;
     }
     
+=======
+                    m_playerGestion.get(i).wakeUp(m_game, this);
+                }
+                
+            }
+
+        //not implemented => send updated game
+        return true;
+    }
+
+>>>>>>> pr/1
     
 }

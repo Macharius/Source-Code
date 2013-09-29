@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /****************************************
 /*        CS5223 - Assignment 1
 /*      Apoorva Tyagi / Rémi Pradal
@@ -163,6 +164,21 @@ class ServerConnections implements Runnable
 		
 
 
+=======
+package Server;
+
+/****************************************
+/*        CS5223 - Assignment 1
+/*      Apoorva Tyagi / Remi Pradal
+/*
+/*	        PlayerConnection.java
+/* This class handle the players connection
+/* at the beginning of the game. It delivers
+/* a list of players with a given ID and
+/* their IP address
+/****************************************/
+
+>>>>>>> pr/1
 //Class handling the user list creation
 public class PlayersConnection
 {
@@ -178,7 +194,11 @@ public class PlayersConnection
     }
     
     
+<<<<<<< HEAD
     // the default port used to connect srever and client is 9409
+=======
+    // the default port used to connect server and client is 9409
+>>>>>>> pr/1
     public PlayersConnection()
     {
         this(9409);

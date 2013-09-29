@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+package Server;
+
+>>>>>>> pr/1
 /****************************************
 /*        CS5223 - Assignment 1
 /*      Apoorva Tyagi / Remi Pradal
@@ -11,6 +16,7 @@
 /****************************************/
 
 
+<<<<<<< HEAD
 import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -47,6 +53,10 @@ class WrongDirection extends Exception
 }
 
 
+=======
+import java.util.*;
+
+>>>>>>> pr/1
 public class Game
 {
 	private int m_length;	//length of the game grid
@@ -148,6 +158,10 @@ public class Game
 	// raise a PlayerNotPresent exception if idPlayer is not registered
 	public synchronized boolean movePlayer(int idPlayer, char direction) throws PlayerNotPresent, WrongDirection
 	{
+<<<<<<< HEAD
+=======
+		
+>>>>>>> pr/1
 		//First we make sure that there is a player with the given ID in the list
 		int index_player = -1;
 		for (int i = 0 ; i < this.m_players.size() ; i ++)
@@ -168,6 +182,10 @@ public class Game
 					
 				// We check that the player is not moving to an impossible direction
 				// ie he is on a border
+<<<<<<< HEAD
+=======
+				
+>>>>>>> pr/1
 				if (!border)
 				{
 					if (direction == 'N')
@@ -248,7 +266,11 @@ public class Game
 	// T => treasure(s)
 	// P => player
 	// C => current player
+<<<<<<< HEAD
 	public void printGrid(int idPlayer)
+=======
+	public synchronized void printGrid(int idPlayer)
+>>>>>>> pr/1
 	{
 		for (int i = 0 ; i < this.m_height ; i ++)
 		{

@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+package Client;
+
+>>>>>>> pr/1
 /****************************************
 /*        CS5223 - Assignment 1
 /*      Apoorva Tyagi / Remi Pradal
@@ -17,6 +22,7 @@ import java.util.*;
 //and the default port 9409
 public class Client
 {
+<<<<<<< HEAD
     protected  String m_ipServer; //server ip address
     protected  int m_serverPort; //server port
     private int m_id;
@@ -58,6 +64,15 @@ public class Client
     
     public void main(String args[])
     {
+=======
+         
+    public static void main(String args[])
+    {
+    	String m_ipServer; //server ip address
+    	int m_serverPort; //server port
+    	int m_id;
+    	Game m_game;
+>>>>>>> pr/1
         //we try read the parameters
         try
         {
@@ -75,14 +90,22 @@ public class Client
         Socket socket;      //the socket for the server
         ObjectInputStream in;  //buffer to read server's messages
         
+<<<<<<< HEAD
         //We contact the server
+=======
+        //We contact the server to get the ID
+>>>>>>> pr/1
         try
         {
             socket = new Socket(InetAddress.getByName(m_ipServer),m_serverPort);
             in = new ObjectInputStream (socket.getInputStream());
             int serverAnswer;
             
+<<<<<<< HEAD
             //We read the server's answer, which the player ID
+=======
+            //We read the server's answer, which is the player ID
+>>>>>>> pr/1
             try
             {
                 serverAnswer = (int)in.readObject();
@@ -94,7 +117,11 @@ public class Client
             }
             System.out.println("Connected to Server. Identified with ID : " + serverAnswer);
             
+<<<<<<< HEAD
             this.m_id = serverAnswer;
+=======
+            m_id = serverAnswer;
+>>>>>>> pr/1
             
             socket.close();
             try
@@ -106,6 +133,10 @@ public class Client
                 
             }
             
+<<<<<<< HEAD
+=======
+          //Write commands to server as game moves  
+>>>>>>> pr/1
             while(true)
             {
                 System.out.println("Send new command (Q to leave) :");
@@ -122,9 +153,48 @@ public class Client
                 out.writeObject(str);
                 out.flush();
 
+<<<<<<< HEAD
                 socket.close();
                 
                 getUpdate();
+=======
+               //socket.close();
+                
+                //getUpdate
+                while(true)
+                {
+                try
+                {  
+                	//System.out.println("Check PORT on Client.java" + (m_serverPort+m_id+1));
+                	socket = null;
+                    ServerSocket ss = new ServerSocket(m_serverPort + m_id + 1);
+                    
+                    socket = ss.accept();
+
+                    in = new ObjectInputStream(socket.getInputStream());
+                    
+                    try
+                    {
+                        m_game = (Game)in.readObject();
+                        System.out.println("New game received from server" + in.toString());
+                        m_game.printGrid();
+                        break;
+                    }
+                    catch (ClassNotFoundException e)
+                    {
+
+                    }
+                             
+                    socket.close();
+                    ss.close();
+                }
+                catch (IOException e)
+                {
+                 System.out.println("Invalid Entry. Retry.") ;  
+                }
+                sc.close();
+                }
+>>>>>>> pr/1
             }
         }
         catch (UnknownHostException e)
@@ -136,5 +206,9 @@ public class Client
             
         }
     }
+<<<<<<< HEAD
+=======
+   
+>>>>>>> pr/1
 }
 

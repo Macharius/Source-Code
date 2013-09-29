@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+package Client;
+
+>>>>>>> pr/1
 /****************************************
 /*        CS5223 - Assignment 1
 /*      Apoorva Tyagi / Remi Pradal
@@ -11,6 +16,7 @@
 /****************************************/
 
 
+<<<<<<< HEAD
 import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -46,6 +52,10 @@ class WrongDirection extends Exception
 	}
 }
 
+=======
+import java.util.*;
+
+>>>>>>> pr/1
 
 public class Game
 {

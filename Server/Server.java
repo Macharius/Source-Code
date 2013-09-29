@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+package Server;
+
+>>>>>>> pr/1
 /****************************************
 /*        CS5223 - Assignment 1
 /*      Apoorva Tyagi / Remi Pradal
@@ -7,11 +12,14 @@
 /****************************************/
 
 
+<<<<<<< HEAD
 import java.net.*;
 import java.io.*;
 import java.util.*;
 
 
+=======
+>>>>>>> pr/1
 public class Server
 {
 
@@ -78,10 +86,14 @@ public class Server
                 System.out.println("Listening messages...");
                 
                 pii.listen();
+<<<<<<< HEAD
                 
                 
 		
 		
+=======
+                		
+>>>>>>> pr/1
 		
 	}
 }

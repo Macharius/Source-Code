@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+package Server;
+
+>>>>>>> pr/1
 /****************************************
 /*        CS5223 - Assignment 1
 /*      Apoorva Tyagi / Remi Pradal
@@ -7,9 +12,14 @@
 /* server class
 /****************************************/
 
+<<<<<<< HEAD
 import java.net.*;
 import java.io.*;
 import java.util.*;
+=======
+import java.util.*;
+import java.util.concurrent.Callable;
+>>>>>>> pr/1
 
 //This class handle the modification of the game according to incoming messages
 //each client must have it's corresponding class, which is a Thread/
@@ -19,7 +29,11 @@ class PlayerGestion implements Runnable
     Game m_game;                            //the current game
     private boolean m_running;              //true if the thread is running
     private ArrayList<String> m_messageList; // the message queue
+<<<<<<< HEAD
     
+=======
+    PlayerIOInterface m_pii;
+>>>>>>> pr/1
     
     public PlayerGestion(int id,Game game)
     {
@@ -68,7 +82,11 @@ class PlayerGestion implements Runnable
                     moved = true;
                     System.out.println("New grid :");
                     this.m_game.printGrid();
+<<<<<<< HEAD
 
+=======
+                    m_pii.receiveGameNewState(m_game);              
+>>>>>>> pr/1
                 }
                 catch (WrongDirection e)
                 {
@@ -96,9 +114,20 @@ class PlayerGestion implements Runnable
     }
     
     //We notify the current thread
+<<<<<<< HEAD
     public void wakeUp()
     {
         this.notify();
     }
+=======
+    public void wakeUp(Game game, PlayerIOInterface pii)
+    {
+    	m_game=game;
+    	m_pii = pii;
+        this.notify();
+    }
+    
+  
+>>>>>>> pr/1
             
 }
