@@ -5,10 +5,11 @@
 *.pydevproject
 .project
 .metadata
+*.class
+*.Class
 bin/
 tmp/
 *.tmp
-*.class
 *.bak
 *.swp
 *~.nib
